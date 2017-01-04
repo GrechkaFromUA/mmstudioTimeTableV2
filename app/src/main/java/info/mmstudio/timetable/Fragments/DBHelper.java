@@ -48,4 +48,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     }
+
+    public void delete(String TABLE_NAME,String KEY){
+
+
+
+    }
+
 }

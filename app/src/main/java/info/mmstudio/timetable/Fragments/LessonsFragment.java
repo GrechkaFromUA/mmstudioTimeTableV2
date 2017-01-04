@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +24,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
     LinearLayout linearLayout;
-    Button btn_add,del;
+    Button btn_add;
     DBHelper dbHelper;
     EditText et;
     String[] les;
@@ -34,7 +32,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
 
 
-
+    public LessonsFragment(){}
 
 
 
@@ -56,8 +54,8 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
 
-        del = (Button) v.findViewById(R.id.del);
-       del.setOnClickListener(this);
+
+
 
 
 
@@ -107,6 +105,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 textView.setTextSize(20);
                 textView.setMaxLines(1);
                 textView.setId(10+i+1);
+                textView.setLongClickable(true);
                 textView.setSingleLine(true);
                 textView.setOnLongClickListener(this);
                 linearLayout.addView(textView);
@@ -119,9 +118,9 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
 
+
         return v;
     }
-
 
 
 
@@ -171,14 +170,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
                 break;
 
-            case  R.id.del:
-                Log.d("mLog","test del");
-                SQLiteDatabase database = dbHelper.getWritableDatabase();
-                database.delete(DBHelper.TABLE_LESSONS, null, null);
-                les = null;
-                dbHelper.close();
-                restart();
-                break;
+
 
 
 
@@ -192,7 +184,49 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
     @Override
-    public boolean onLongClick(View view) {
+    public boolean onLongClick(final View view) {
+
+        final String editableText=les[view.getId()-11];
+
+        et.setText(editableText);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setView(et)
+                .setCancelable(false)
+                .setNegativeButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+
+                                dbHelper = new DBHelper(view.getContext());
+
+                                SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+                                database.execSQL("DELETE FROM Lessons WHERE Lessons_name LIKE '%"+editableText+"%'");
+
+
+                            restart();
+                            }
+                        })
+                .setPositiveButton("Rename",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                dbHelper = new DBHelper(view.getContext());
+
+                                SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+
+                                database.execSQL(" UPDATE Lessons SET Lessons_name = REPLACE(Lessons_name, '"+editableText+"', '"+et.getText().toString()+"');");
+
+                            restart();
+                            }
+                        })
+        ;
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
         return false;
     }
 

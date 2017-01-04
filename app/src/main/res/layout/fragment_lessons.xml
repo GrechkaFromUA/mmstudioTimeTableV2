@@ -26,12 +26,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/add_less" />
 
-                <Button
-                    android:text="Delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/del"
-                    android:gravity="center_horizontal" />
             </LinearLayout>
         </ScrollView>
 
