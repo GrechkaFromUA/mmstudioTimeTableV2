@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<group android:checkableBehavior="single">
+    <item
+        android:checked="true"
+        android:id="@+id/nav_main"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="Главная" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="Настройки" />
+</group>
+
+<item android:title="Основные параметры">
+    <menu>
+        <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_time"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Время занятий" />
+        <item
+            android:id="@+id/nav_subjects"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Предметы" />
+        <item
+            android:id="@+id/nav_teachers"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Учителя" />
+        <item
+            android:id="@+id/nav_buildings"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Корпусы" />
+        <item
+            android:id="@+id/nav_lessons_types"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Тип урока" />
+        </group>
+    </menu>
+</item>
+
+<item android:title="Отображение"
+    android:layout_marginBottom="45dp">
+    <menu>
+        <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_two_weeks"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Показывать две недели" />
+        <item
+            android:id="@+id/nav_first_day"
+
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Первый день семестра" />
+</group>
+    </menu>
+</item>
+
+</menu>
