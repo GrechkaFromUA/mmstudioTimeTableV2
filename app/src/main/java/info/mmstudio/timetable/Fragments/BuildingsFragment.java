@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import info.mmstudio.timetable.Fragments.BuildingsFragment;
+
 import info.mmstudio.timetable.R;
 
 public class BuildingsFragment extends Fragment {
@@ -49,14 +48,6 @@ public class BuildingsFragment extends Fragment {
             data.add(m);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         String[] from = {AT_NAME_TEXT};
         // массив ID View-компонентов, в которые будут вставлять данные

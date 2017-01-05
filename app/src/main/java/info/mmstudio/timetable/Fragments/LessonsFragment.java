@@ -17,7 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import info.mmstudio.timetable.R;
 
@@ -26,10 +32,15 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
     LinearLayout linearLayout;
-    Button btn_add;
+    FloatingActionButton btn_add;
     DBHelper dbHelper;
     EditText et;
     String[] les;
+    TextView sign;
+    SimpleAdapter sAdapter;
+    ListView lv;
+
+    final String AT_NAME_TEXT = "text";
 
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
 
@@ -43,26 +54,21 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_lessons, container, false);
+        View v = inflater.inflate(R.layout.testlists, container, false);
 
 
 
-        btn_add = (Button) v.findViewById(R.id.add_less);
+        btn_add = (FloatingActionButton) v.findViewById(R.id.fab);
         btn_add.setOnClickListener(this);
 
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
 
+
+
+        sign = (TextView) v.findViewById(R.id.Sign);
 
 
 
@@ -84,6 +90,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
         int k = cursor.getCount();
+
         les= new String[k+1];
         if (cursor.moveToFirst()) {
 
@@ -106,9 +113,15 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
             LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, wrapContent);
 
 
+
+            ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(k);
+            Map<String, Object> m;
+
+
+
             for (int i = 0; i < l - 1; i++) {
 
-                TextView textView = new TextView(v.getContext());
+               /* TextView textView = new TextView(v.getContext());
                 textView.setText(les[i]);
                 textView.setLayoutParams(lParams);
                 textView.setTextSize(20);
@@ -118,9 +131,25 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 textView.setSingleLine(true);
                 textView.setOnLongClickListener(this);
                 linearLayout.addView(textView);
-
+                */
+                m = new HashMap<String, Object>();
+                m.put(AT_NAME_TEXT, les[i]);
+                data.add(m);
 
             }
+
+            String[] from = {AT_NAME_TEXT};
+            // массив ID View-компонентов, в которые будут вставлять данные
+            int[] to = {R.id.Sign};
+
+            sAdapter = new SimpleAdapter(getActivity(), data, R.layout.pc_list_activity_mod, from, to);
+
+
+            // определяем список и присваиваем ему адаптер
+            lv = (ListView) v.findViewById(R.id.listTEST);
+            lv.setAdapter(sAdapter);
+
+
         }
 
 
@@ -149,7 +178,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
 
-            case R.id.add_less:
+            case R.id.fab:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Добавление Предмета")
@@ -159,11 +188,12 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
 
-                                        String lessons = et.getText().toString();
+                                        String lessons1 = et.getText().toString();
 
-                                        if(lessons !=null) {
+                                        if(lessons1 !=null || lessons1 !="") {
+
                                             ContentValues contentValues = new ContentValues();
-                                            contentValues.put(DBHelper.KEY_LESONS_NAME, lessons);
+                                            contentValues.put(DBHelper.KEY_LESONS_NAME, lessons1);
 
                                             SQLiteDatabase database = dbHelper.getWritableDatabase();
                                             database.insert(DBHelper.TABLE_LESSONS, null, contentValues);
