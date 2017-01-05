@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="pc1">Предмет 1</string>
+    <string name="pc2">Предмет 2</string>
+    <string name="pc3">Предмет 3</string>
+    <string name="pc4">Предмет 4</string>
+    <string name="pc5">Предмет 5</string>
+    <string name="pc6">Предмет 6</string>
+    <string name="pc7">Предмет 7</string>
 </resources>
