@@ -24,15 +24,15 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main,container,false);
 
         final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-       // fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logoico));
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logoico));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(image==false) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logoico));
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mylogo));
                     image=true;
                 } else {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mylogo));
+                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logoico));
                     image=false;
                 }
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
