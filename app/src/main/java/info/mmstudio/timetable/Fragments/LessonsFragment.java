@@ -30,7 +30,6 @@ import info.mmstudio.timetable.R;
 public class LessonsFragment extends Fragment  implements View.OnClickListener,View.OnLongClickListener{
 
 
-
     LinearLayout linearLayout;
     FloatingActionButton btn_add;
     DBHelper dbHelper;
@@ -44,11 +43,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
     int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-
     public LessonsFragment(){}
-
-
-
 
     @Nullable
     @Override
@@ -64,13 +59,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
 
-
-
-
-
         sign = (TextView) v.findViewById(R.id.Sign);
-
-
 
 
 
@@ -85,8 +74,6 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query(DBHelper.TABLE_LESSONS, null, null, null, null, null, null);
-
-
 
 
         int k = cursor.getCount();
@@ -153,30 +140,14 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
         }
 
 
-
-
-
-
         return v;
     }
-
-
-
-
-
-
 
 
     @Override
     public void onClick(View v) {
 
-
-
         switch (v.getId()){
-
-
-
-
 
             case R.id.fab:
 
@@ -208,10 +179,6 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 alert.show();
 
                 break;
-
-
-
-
 
         }
 
