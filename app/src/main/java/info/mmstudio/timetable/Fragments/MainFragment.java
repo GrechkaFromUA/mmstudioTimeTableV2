@@ -29,7 +29,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(image==false) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.mylogo));
+
                     image=true;
                 } else {
                     fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logoico));

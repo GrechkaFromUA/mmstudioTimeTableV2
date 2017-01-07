@@ -10,16 +10,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +54,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.testlists, container, false);
+        final View v = inflater.inflate(R.layout.testlists, container, false);
 
 
 
@@ -135,6 +140,15 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
             // определяем список и присваиваем ему адаптер
             lv = (ListView) v.findViewById(R.id.listTEST);
             lv.setAdapter(sAdapter);
+            lv.setLongClickable(true);
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                               int arg2, long arg3) {
+                    showPopupMenu(v);
+                    return false;
+                }
+            });
 
 
         }
@@ -191,48 +205,8 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
     @Override
     public boolean onLongClick(final View view) {
-
-        final String editableText=les[view.getId()-11];
-
-        et.setText(editableText);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setView(et)
-                .setCancelable(false)
-                .setNegativeButton("Delete",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-
-                                dbHelper = new DBHelper(view.getContext());
-
-                                SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-                                database.execSQL("DELETE FROM Lessons WHERE Lessons_name LIKE '%"+editableText+"%'");
-
-
-                            restart();
-                            }
-                        })
-                .setPositiveButton("Rename",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                dbHelper = new DBHelper(view.getContext());
-
-                                SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-
-                                database.execSQL(" UPDATE Lessons SET Lessons_name = REPLACE(Lessons_name, '"+editableText+"', '"+et.getText().toString()+"');");
-
-                            restart();
-                            }
-                        })
-        ;
-        AlertDialog alert = builder.create();
-        alert.show();
-
-
+        Log.d("mLog","Click");
+        showPopupMenu(view);
         return false;
     }
 
@@ -246,6 +220,55 @@ public void restart(){
 }
 
 
+
+
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getActivity(), getView());
+        popupMenu.inflate(R.menu.popupmenu); // Для Android 4.0
+        // для версии Android 3.0 нужно использовать длинный вариант
+        // popupMenu.getMenuInflater().inflate(R.menu.popupmenu,
+        // popupMenu.getMenu());
+
+        popupMenu
+                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Toast.makeText(PopupMenuDemoActivity.this,
+                        // item.toString(), Toast.LENGTH_LONG).show();
+                        // return true;
+                        switch (item.getItemId()) {
+
+                            case R.id.menu1:
+                                Toast.makeText(getActivity().getApplicationContext(),
+                                        "Вы выбрали PopupMenu 1",
+                                        Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.menu2:
+                                Toast.makeText(getActivity().getApplicationContext(),
+                                        "Вы выбрали PopupMenu 2",
+                                        Toast.LENGTH_SHORT).show();
+                                return true;
+
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                Toast.makeText(getActivity().getApplicationContext(), "onDismiss",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        popupMenu.show();
+    }
 
 
 
