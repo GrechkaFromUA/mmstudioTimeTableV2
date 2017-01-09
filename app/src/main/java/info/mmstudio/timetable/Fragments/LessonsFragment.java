@@ -54,7 +54,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.testlists, container, false);
+          View v = inflater.inflate(R.layout.testlists, container, false);
 
 
 
@@ -75,7 +75,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
         et =  new EditText(v.getContext());
 
 
-        dbHelper = new DBHelper(v.getContext());
+        dbHelper = new DBHelper(getActivity());
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query(DBHelper.TABLE_LESSONS, null, null, null, null, null, null);
@@ -128,6 +128,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 m.put(AT_NAME_TEXT, les[i]);
                 data.add(m);
 
+
             }
 
             String[] from = {AT_NAME_TEXT};
@@ -141,11 +142,12 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
             lv = (ListView) v.findViewById(R.id.listTEST);
             lv.setAdapter(sAdapter);
             lv.setLongClickable(true);
+            lv.setLayoutParams(lParams);
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
-                    showPopupMenu(v);
+                    showPopupMenu(getView());
                     return false;
                 }
             });
@@ -204,7 +206,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
     @Override
-    public boolean onLongClick(final View view) {
+    public boolean onLongClick( View view) {
         Log.d("mLog","Click");
         showPopupMenu(view);
         return false;
@@ -223,7 +225,7 @@ public void restart(){
 
 
 
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(final View view) {
         PopupMenu popupMenu = new PopupMenu(getActivity(), getView());
         popupMenu.inflate(R.menu.popupmenu); // Для Android 4.0
         // для версии Android 3.0 нужно использовать длинный вариант
@@ -240,17 +242,23 @@ public void restart(){
                         // Toast.makeText(PopupMenuDemoActivity.this,
                         // item.toString(), Toast.LENGTH_LONG).show();
                         // return true;
+                        SQLiteDatabase database = dbHelper.getWritableDatabase();
                         switch (item.getItemId()) {
 
                             case R.id.menu1:
-                                Toast.makeText(getActivity().getApplicationContext(),
-                                        "Вы выбрали PopupMenu 1",
-                                        Toast.LENGTH_SHORT).show();
+
+
+
+
+
+                                dbHelper.close();
+                                restart();
                                 return true;
                             case R.id.menu2:
-                                Toast.makeText(getActivity().getApplicationContext(),
-                                        "Вы выбрали PopupMenu 2",
-                                        Toast.LENGTH_SHORT).show();
+
+                                Log.d("mLog",Integer.toString(view.getId()));
+
+                                //database.execSQL("DELETE FROM LESSONS WHERE Lessons_name LIKE `%"+et+"%`");
                                 return true;
 
                             default:
@@ -263,8 +271,7 @@ public void restart(){
 
             @Override
             public void onDismiss(PopupMenu menu) {
-                Toast.makeText(getActivity().getApplicationContext(), "onDismiss",
-                        Toast.LENGTH_SHORT).show();
+
             }
         });
         popupMenu.show();

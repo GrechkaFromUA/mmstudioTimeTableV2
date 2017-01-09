@@ -3,6 +3,7 @@ package info.mmstudio.timetable.Fragments;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Максим on 04.01.2017.
@@ -14,9 +15,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "TimeTableDB";
     public static final String TABLE_LESSONS= "Lessons";
+    public static final String TABLE_TEACHERS= "Teachers";
 
     public static final String KEY_ID = "_id";
     public static final String KEY_LESONS_NAME = "Lessons_name";
+    public static final String KEY_TEACHER_NAME = "Teacher_name";
     public static final String KEY_LESSONS_TYPE = "Lessons_type";
     int k;
 
@@ -35,6 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
+
+
+
     }
 
 
@@ -43,16 +49,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("drop table if exists " + TABLE_LESSONS);
+        db.execSQL("drop table if exists " + TABLE_TEACHERS);
 
         onCreate(db);
 
 
     }
 
-    public void delete(String TABLE_NAME,String KEY){
 
-
-
-    }
 
 }
