@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -147,15 +148,13 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
-                    showPopupMenu(getView());
+                    showPopupMenu(arg1);
                     return false;
                 }
             });
 
 
         }
-
-
         return v;
     }
 
@@ -197,8 +196,6 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 break;
 
         }
-
-
     }
 
 
@@ -226,12 +223,8 @@ public void restart(){
 
 
     private void showPopupMenu(final View view) {
-        PopupMenu popupMenu = new PopupMenu(getActivity(), getView());
-        popupMenu.inflate(R.menu.popupmenu); // Для Android 4.0
-        // для версии Android 3.0 нужно использовать длинный вариант
-        // popupMenu.getMenuInflater().inflate(R.menu.popupmenu,
-        // popupMenu.getMenu());
-
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view, Gravity.RIGHT);
+        popupMenu.inflate(R.menu.popupmenu);
         popupMenu
                 .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -239,26 +232,20 @@ public void restart(){
 
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        // Toast.makeText(PopupMenuDemoActivity.this,
-                        // item.toString(), Toast.LENGTH_LONG).show();
-                        // return true;
                         SQLiteDatabase database = dbHelper.getWritableDatabase();
                         switch (item.getItemId()) {
 
                             case R.id.menu1:
 
-
-
-
-
                                 dbHelper.close();
+
                                 restart();
                                 return true;
                             case R.id.menu2:
 
                                 Log.d("mLog",Integer.toString(view.getId()));
 
-                                //database.execSQL("DELETE FROM LESSONS WHERE Lessons_name LIKE `%"+et+"%`");
+//                                database.execSQL("DELETE FROM LESSONS WHERE Lessons_name LIKE `%"+et+"%`");
                                 return true;
 
                             default:

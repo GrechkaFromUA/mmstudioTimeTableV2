@@ -16,11 +16,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "TimeTableDB";
     public static final String TABLE_LESSONS= "Lessons";
     public static final String TABLE_TEACHERS= "Teachers";
+    public static final String TABLE_SUBJECTS= "Subjects";
 
     public static final String KEY_ID = "_id";
     public static final String KEY_LESONS_NAME = "Lessons_name";
     public static final String KEY_TEACHER_NAME = "Teacher_name";
     public static final String KEY_LESSONS_TYPE = "Lessons_type";
+    public static final String KEY_SUBJECT_NAME = "Subject_name";
+
     int k;
 
 
