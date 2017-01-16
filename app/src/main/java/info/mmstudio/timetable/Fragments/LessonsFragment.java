@@ -39,7 +39,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
     LinearLayout linearLayout;
     FloatingActionButton btn_add;
     DBHelper dbHelper;
-    EditText et;
+    EditText et,et2;
     String[] les;
     TextView sign;
     SimpleAdapter sAdapter;
@@ -74,6 +74,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
 
         et =  new EditText(v.getContext());
+        et2 =  new EditText(v.getContext());
 
 
         dbHelper = new DBHelper(getActivity());
@@ -148,7 +149,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
-                    showPopupMenu(arg1);
+                    showPopupMenu(arg1,arg2);
                     return false;
                 }
             });
@@ -167,7 +168,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
             case R.id.fab:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Добавление Предмета")
+                builder.setTitle("Adding Subject Type")
                         .setView(et)
                         .setCancelable(false)
                         .setNegativeButton("Add",
@@ -176,17 +177,23 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
                                         String lessons1 = et.getText().toString();
 
-                                        if(lessons1 !=null || lessons1 !="") {
-
+                                        if(!lessons1.equals(null)) {
                                             ContentValues contentValues = new ContentValues();
                                             contentValues.put(DBHelper.KEY_LESONS_NAME, lessons1);
 
                                             SQLiteDatabase database = dbHelper.getWritableDatabase();
                                             database.insert(DBHelper.TABLE_LESSONS, null, contentValues);
-                                            dbHelper.close();
-                                            restart();
                                             dialog.cancel();
-                                        }else{dialog.cancel();}
+                                            restart();
+
+                                        }else{
+
+                                            dialog.cancel();
+                                            restart();
+                                            Toast.makeText(getActivity(),"You cant add empty name",Toast.LENGTH_SHORT).show();
+
+
+                                        }
                                     }
                                 })
                 ;
@@ -204,17 +211,17 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
     @Override
     public boolean onLongClick( View view) {
-        Log.d("mLog","Click");
-        showPopupMenu(view);
-        return false;
+
+        return  false;
     }
 
 
 
 
 public void restart(){
-
+    dbHelper.close();
     getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+
 
 }
 
@@ -222,7 +229,7 @@ public void restart(){
 
 
 
-    private void showPopupMenu(final View view) {
+    private void showPopupMenu(final View view, final int id1) {
         PopupMenu popupMenu = new PopupMenu(getActivity(), view, Gravity.RIGHT);
         popupMenu.inflate(R.menu.popupmenu);
         popupMenu
@@ -232,20 +239,53 @@ public void restart(){
 
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        SQLiteDatabase database = dbHelper.getWritableDatabase();
+                        final SQLiteDatabase database = dbHelper.getWritableDatabase();
                         switch (item.getItemId()) {
 
                             case R.id.menu1:
 
-                                dbHelper.close();
+                                et2.setText(les[id1]);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                builder.setTitle("Rename Subject type")
+                                        .setView(et2)
+                                        .setCancelable(false)
+                                        .setPositiveButton("Rename",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+
+                                                        String lessons1 = et2.getText().toString();
+
+                                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                                            database.execSQL("UPDATE Lessons SET "+DBHelper.KEY_LESONS_NAME+" = '"+et2.getText().toString()+"' WHERE "+DBHelper.KEY_LESONS_NAME+" = '"+lessons1+"'");
+                                                        Toast.makeText(getActivity(),et2.getText().toString(),Toast.LENGTH_SHORT).show();
+                                                            dialog.cancel();
+                                                            restart();
+
+
+                                                    }
+                                                }).setNegativeButton("Cancel",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                                restart();
+                                            }
+                                        });
+
+                                AlertDialog alert = builder.create();
+                                alert.show();
+
+
+
 
                                 restart();
                                 return true;
                             case R.id.menu2:
 
-                                Log.d("mLog",Integer.toString(view.getId()));
-
-//                                database.execSQL("DELETE FROM LESSONS WHERE Lessons_name LIKE `%"+et+"%`");
+                               Integer j = id1;
+                                j++;
+                                Log.d("mLog",Integer.toString(j));
+                                database.execSQL("DELETE  FROM "+DBHelper.TABLE_LESSONS+" WHERE "+DBHelper.KEY_LESONS_NAME+" LIKE '%"+les[id1]+"%'");
+                                restart();
                                 return true;
 
                             default:
