@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -117,17 +114,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
             for (int i = 0; i < l - 1; i++) {
 
-               /* TextView textView = new TextView(v.getContext());
-                textView.setText(les[i]);
-                textView.setLayoutParams(lParams);
-                textView.setTextSize(20);
-                textView.setMaxLines(1);
-                textView.setId(10+i+1);
-                textView.setLongClickable(true);
-                textView.setSingleLine(true);
-                textView.setOnLongClickListener(this);
-                linearLayout.addView(textView);
-                */
+
                 m = new HashMap<String, Object>();
                 m.put(AT_NAME_TEXT, les[i]);
                 data.add(m);

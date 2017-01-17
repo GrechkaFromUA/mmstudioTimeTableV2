@@ -1,35 +1,53 @@
 package info.mmstudio.timetable.Fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Intent;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.mmstudio.timetable.Fragments.BuildingsFragment;
-
 import info.mmstudio.timetable.R;
 
-public class BuildingsFragment extends Fragment {
+public class BuildingsFragment extends Fragment  implements View.OnClickListener,View.OnLongClickListener{
+
+
+    LinearLayout linearLayout;
+    FloatingActionButton btn_add;
+    DBHelper dbHelper;
+    EditText et,et2;
+    String[] les;
+    TextView sign;
+    SimpleAdapter sAdapter;
+    ListView lv;
 
     final String AT_NAME_TEXT = "text";
 
-    Integer[] mSign = {R.string.pc1, R.string.pc2, R.string.pc3, R.string.pc4, R.string.pc5, R.string.pc6, R.string.pc7, R.string.pc7, R.string.pc7, R.string.pc7, R.string.pc7, R.string.pc7};
-    ListView lv;
-    TextView sign;
-    Intent intent;
-    SimpleAdapter sAdapter;
+    int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    public BuildingsFragment(){}
 
     @Nullable
     @Override
@@ -37,68 +55,246 @@ public class BuildingsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.testlists, container, false);
 
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(mSign.length);
-        Map<String, Object> m;
+
+
+        btn_add = (FloatingActionButton) v.findViewById(R.id.fab);
+        btn_add.setOnClickListener(this);
+
+
+
 
         sign = (TextView) v.findViewById(R.id.Sign);
 
-        for (int i = 0; i < mSign.length; i++) {
-            m = new HashMap<String, Object>();
-            m.put(AT_NAME_TEXT, getString(mSign[i]));
-            data.add(m);
+
+
+
+        linearLayout = (LinearLayout) v.findViewById(R.id.liner_less);
+
+
+        et =  new EditText(getActivity());
+
+
+
+        dbHelper = new DBHelper(getActivity());
+
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        database.execSQL("create table if not exists "+DBHelper.TABLE_BUILDS+" ("+DBHelper.KEY_ID+" integer primary key, "+DBHelper.KEY_BUILDS+" text)");
+        Cursor cursor = database.query(DBHelper.TABLE_BUILDS, null, null, null, null, null, null);
+
+
+        int k = cursor.getCount();
+
+        les= new String[k+1];
+        if (cursor.moveToFirst()) {
+
+            int lessIndex = cursor.getColumnIndex(DBHelper.KEY_BUILDS);
+            int i = 0;
+            do {
+
+                les[i] = cursor.getString(lessIndex);
+                i++;
+            } while (cursor.moveToNext());
         }
 
+        cursor.close();
 
-        String[] from = {AT_NAME_TEXT};
-        // массив ID View-компонентов, в которые будут вставлять данные
-        int[] to = {R.id.Sign};
-
-        sAdapter = new SimpleAdapter(getActivity(), data, R.layout.pc_list_activity_mod, from, to);
+        LinearLayout.LayoutParams linLayoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
 
-        // определяем список и присваиваем ему адаптер
-        lv = (ListView) v.findViewById(R.id.listTEST);
-        lv.setAdapter(sAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+        if(les!=null) {
+            int l = les.length;
+            LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, wrapContent);
 
-                switch (position) {
-                    case 0:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 4:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 5:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
-                    case 6:
-                        intent = new Intent(getActivity(), BuildingsFragment.class);
-                        startActivity(intent);
-                        break;
 
-                }
+
+            ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(k);
+            Map<String, Object> m;
+
+
+
+            for (int i = 0; i < l - 1; i++) {
+
+
+                m = new HashMap<String, Object>();
+                m.put(AT_NAME_TEXT, les[i]);
+                data.add(m);
+
 
             }
 
-        });
-return v;
+            String[] from = {AT_NAME_TEXT};
+            // массив ID View-компонентов, в которые будут вставлять данные
+            int[] to = {R.id.Sign};
+
+            sAdapter = new SimpleAdapter(getActivity(), data, R.layout.pc_list_activity_mod, from, to);
+
+
+            // определяем список и присваиваем ему адаптер
+            lv = (ListView) v.findViewById(R.id.listTEST);
+            lv.setAdapter(sAdapter);
+            lv.setLongClickable(true);
+            lv.setLayoutParams(lParams);
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                               int arg2, long arg3) {
+                    showPopupMenu(arg1,arg2);
+                    return false;
+                }
+            });
+
+
+        }
+        return v;
     }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.fab:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Adding Subject Type")
+                        .setView(et)
+                        .setCancelable(false)
+                        .setNegativeButton("Add",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        String lessons1 = et.getText().toString();
+
+                                        if(TextUtils.isEmpty(lessons1)) {
+                                            Toast.makeText(getActivity(),"You cant add empty name",Toast.LENGTH_SHORT).show();
+                                            dialog.cancel();
+                                            restart();
+
+                                        }else{
+
+
+                                            Log.d("mLog",lessons1);
+                                            ContentValues contentValues = new ContentValues();
+                                            contentValues.put(DBHelper.KEY_BUILDS, lessons1);
+
+                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                            database.insert(DBHelper.TABLE_BUILDS, null, contentValues);
+                                            dialog.cancel();
+                                            restart();
+
+
+
+
+                                        }
+                                    }
+                                })
+                ;
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                break;
+
+        }
+    }
+
+
+
+
+
+    @Override
+    public boolean onLongClick( View view) {
+
+        return  false;
+    }
+
+
+
+
+    public void restart(){
+        dbHelper.close();
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+
+
+    }
+
+
+
+
+
+    private void showPopupMenu(final View view, final int id1) {
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view, Gravity.RIGHT);
+        popupMenu.inflate(R.menu.popupmenu);
+        popupMenu
+                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        final SQLiteDatabase database = dbHelper.getWritableDatabase();
+                        switch (item.getItemId()) {
+
+                            case R.id.menu1:
+
+                                et2 =  new EditText(getActivity());
+                                et2.setText(les[id1]);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Rename Type")
+                                        .setView(et2)
+                                        .setCancelable(false)
+                                        .setPositiveButton("Rename",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+
+                                                        SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                                        database.execSQL("UPDATE "+DBHelper.TABLE_BUILDS+" SET "+DBHelper.KEY_BUILDS+" = '"+et2.getText().toString()+"' WHERE "+DBHelper.KEY_BUILDS+" = '"+les[id1]+"'");
+                                                        Log.d("mLog","123:"+et2.getText().toString());
+                                                        restart();
+                                                    }
+                                                }) .setNegativeButton("Cancel",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+
+                                                restart();
+                                            }
+                                        })
+                                ;
+                                AlertDialog alert = builder.create();
+                                alert.show();
+
+
+
+                                restart();
+                                return true;
+                            case R.id.menu2:
+
+
+                                database.execSQL("DELETE  FROM "+DBHelper.TABLE_BUILDS+" WHERE "+DBHelper.KEY_BUILDS+" = '"+les[id1]+"'");
+                                restart();
+                                return true;
+
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+
+            @Override
+            public void onDismiss(PopupMenu menu) {
+
+            }
+        });
+        popupMenu.show();
+    }
+
+
+
+
 }
+
+
 
