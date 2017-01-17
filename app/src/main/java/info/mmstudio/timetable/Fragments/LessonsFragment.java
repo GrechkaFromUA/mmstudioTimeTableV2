@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,14 +74,15 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
         linearLayout = (LinearLayout) v.findViewById(R.id.liner_less);
 
 
-        et =  new EditText(v.getContext());
-        et2 =  new EditText(v.getContext());
+        et =  new EditText(getActivity());
+
 
 
         dbHelper = new DBHelper(getActivity());
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        Cursor cursor = database.query(DBHelper.TABLE_LESSONS, null, null, null, null, null, null);
+        database.execSQL("create table if not exists "+DBHelper.TABLE_LESSONS_TYPE+" ("+DBHelper.KEY_ID+" integer primary key, "+DBHelper.KEY_LESSONS_TYPE+" text)");
+        Cursor cursor = database.query(DBHelper.TABLE_LESSONS_TYPE, null, null, null, null, null, null);
 
 
         int k = cursor.getCount();
@@ -88,7 +90,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
         les= new String[k+1];
         if (cursor.moveToFirst()) {
 
-            int lessIndex = cursor.getColumnIndex(DBHelper.KEY_LESONS_NAME);
+            int lessIndex = cursor.getColumnIndex(DBHelper.KEY_LESSONS_TYPE);
             int i = 0;
             do {
 
@@ -167,7 +169,7 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
             case R.id.fab:
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Adding Subject Type")
                         .setView(et)
                         .setCancelable(false)
@@ -177,20 +179,24 @@ public class LessonsFragment extends Fragment  implements View.OnClickListener,V
 
                                         String lessons1 = et.getText().toString();
 
-                                        if(!lessons1.equals(null)) {
-                                            ContentValues contentValues = new ContentValues();
-                                            contentValues.put(DBHelper.KEY_LESONS_NAME, lessons1);
-
-                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
-                                            database.insert(DBHelper.TABLE_LESSONS, null, contentValues);
+                                        if(TextUtils.isEmpty(lessons1)) {
+                                            Toast.makeText(getActivity(),"You cant add empty name",Toast.LENGTH_SHORT).show();
                                             dialog.cancel();
                                             restart();
 
                                         }else{
 
+
+                                            Log.d("mLog",lessons1);
+                                            ContentValues contentValues = new ContentValues();
+                                            contentValues.put(DBHelper.KEY_LESSONS_TYPE, lessons1);
+
+                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                            database.insert(DBHelper.TABLE_LESSONS_TYPE, null, contentValues);
                                             dialog.cancel();
                                             restart();
-                                            Toast.makeText(getActivity(),"You cant add empty name",Toast.LENGTH_SHORT).show();
+
+
 
 
                                         }
@@ -244,36 +250,32 @@ public void restart(){
 
                             case R.id.menu1:
 
+                                et2 =  new EditText(getActivity());
                                 et2.setText(les[id1]);
-                                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                                builder.setTitle("Rename Subject type")
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Rename Type")
                                         .setView(et2)
                                         .setCancelable(false)
                                         .setPositiveButton("Rename",
                                                 new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
 
-                                                        String lessons1 = et2.getText().toString();
-
-                                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
-                                                            database.execSQL("UPDATE Lessons SET "+DBHelper.KEY_LESONS_NAME+" = '"+et2.getText().toString()+"' WHERE "+DBHelper.KEY_LESONS_NAME+" = '"+lessons1+"'");
-                                                        Toast.makeText(getActivity(),et2.getText().toString(),Toast.LENGTH_SHORT).show();
-                                                            dialog.cancel();
+                                                         SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                                          database.execSQL("UPDATE "+DBHelper.TABLE_LESSONS_TYPE+" SET "+DBHelper.KEY_LESSONS_TYPE+" = '"+et2.getText().toString()+"' WHERE "+DBHelper.KEY_LESSONS_TYPE+" = '"+les[id1]+"'");
+                                                        Log.d("mLog","123:"+et2.getText().toString());
                                                             restart();
-
-
                                                     }
-                                                }).setNegativeButton("Cancel",
+                                                }) .setNegativeButton("Cancel",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
 
+
                                                 restart();
                                             }
-                                        });
-
+                                        })
+                                ;
                                 AlertDialog alert = builder.create();
                                 alert.show();
-
 
 
 
@@ -281,10 +283,8 @@ public void restart(){
                                 return true;
                             case R.id.menu2:
 
-                               Integer j = id1;
-                                j++;
-                                Log.d("mLog",Integer.toString(j));
-                                database.execSQL("DELETE  FROM "+DBHelper.TABLE_LESSONS+" WHERE "+DBHelper.KEY_LESONS_NAME+" LIKE '%"+les[id1]+"%'");
+
+                                database.execSQL("DELETE  FROM "+DBHelper.TABLE_LESSONS_TYPE+" WHERE "+DBHelper.KEY_LESSONS_TYPE+" = '"+les[id1]+"'");
                                 restart();
                                 return true;
 

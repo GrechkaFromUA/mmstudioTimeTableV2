@@ -14,15 +14,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "TimeTableDB";
-    public static final String TABLE_LESSONS= "Lessons";
-    public static final String TABLE_TEACHERS= "Teachers";
+    public static final String TABLE_TIME= "Time";
+
     public static final String TABLE_SUBJECTS= "Subjects";
 
+    public static final String TABLE_TEACHERS= "Teachers";
+
+    public static final String TABLE_BUILDS= "Builds";
+
+    public static final String TABLE_LESSONS_TYPE= "Lessons_type";
+
+
     public static final String KEY_ID = "_id";
-    public static final String KEY_LESONS_NAME = "Lessons_name";
-    public static final String KEY_TEACHER_NAME = "Teacher_name";
-    public static final String KEY_LESSONS_TYPE = "Lessons_type";
+
+    public static final String KEY_TIME = "Time";
+
     public static final String KEY_SUBJECT_NAME = "Subject_name";
+
+    public static final String KEY_TEACHER_NAME = "Teacher_name";
+
+    public static final String KEY_BUILDS = "Builds_name";
+
+    public static final String KEY_LESSONS_TYPE = "Lessons_type";
+
+
+
+
+
+
+
+
+
+
 
     int k;
 
@@ -36,8 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_LESSONS+ "(" + KEY_ID
-                + " integer primary key," + KEY_LESONS_NAME + " text," + KEY_LESSONS_TYPE + " text" + ")");
+        db.execSQL("create table " + TABLE_LESSONS_TYPE+ "(" + KEY_ID
+                + " integer primary key,"+ KEY_LESSONS_TYPE + " text" + ")");
 
 
 
@@ -51,8 +74,11 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("drop table if exists " + TABLE_LESSONS);
+        db.execSQL("drop table if exists " + TABLE_TIME);
+        db.execSQL("drop table if exists " + TABLE_SUBJECTS);
         db.execSQL("drop table if exists " + TABLE_TEACHERS);
+        db.execSQL("drop table if exists " + TABLE_BUILDS);
+        db.execSQL("drop table if exists " + TABLE_LESSONS_TYPE);
 
         onCreate(db);
 
