@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import info.mmstudio.timetable.Fragments.BuildingsFragment;
 import info.mmstudio.timetable.Fragments.LessonsFragment;
@@ -23,8 +24,7 @@ import info.mmstudio.timetable.Fragments.TeachersFragment;
 import info.mmstudio.timetable.Fragments.TimeFragment;
 import info.mmstudio.timetable.R;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         FragmentManager fm = getFragmentManager();
         setTitle("Расписание");
         fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
     }
+
+
 
     @Override
     public void onBackPressed() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <group android:checkableBehavior="single">
     <item
@@ -44,10 +45,12 @@
     android:layout_marginBottom="45dp">
     <menu>
         <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_two_weeks"
+            <item
+                android:id="@+id/nav_two_weeks"
+                android:title="Показывать две недели"
+                app:actionLayout="@layout/switch_activity"
+                />
 
-            android:title="Показывать две недели" />
         <item
             android:id="@+id/nav_first_day"
 
