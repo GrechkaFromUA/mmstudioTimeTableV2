@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import info.mmstudio.timetable.R;
 
-public class MainFragment extends Fragment {
+public class EditFragment extends Fragment {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Nullable
@@ -24,12 +24,12 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main,container,false);
         final FragmentManager fm = getFragmentManager();
         final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.edit));
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.accept));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                fm.beginTransaction().replace(R.id.content_frame, new EditFragment()).commit();
+                fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
             }
         });
 
