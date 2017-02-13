@@ -11,9 +11,8 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/Sign"
-        android:textColor="@android:color/black"
-            android:textStyle="normal"
-            android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="70dp" />
 
