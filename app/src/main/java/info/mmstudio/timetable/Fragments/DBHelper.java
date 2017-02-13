@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "TimeTableDB";
 
-    public static final String TABLE_TIME= "Time";
+    public static final String TABLE_TIME= "Time_les";
 
     public static final String TABLE_SUBJECTS= "Subjects";
 
@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "_id";
 
-    public static final String KEY_TIME = "Time";
+    public static final String KEY_TIME = "Time_les";
 
     public static final String KEY_SUBJECT_NAME = "Subject_name";
 
