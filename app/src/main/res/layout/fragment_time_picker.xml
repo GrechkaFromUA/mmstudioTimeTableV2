@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus"
+        android:layout_gravity="bottom|end" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:text="Начало урока"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:textColor="@android:color/white"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:layout_weight="1"
+                android:textStyle="normal|bold" />
+        </LinearLayout>
+
+        <TimePicker
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timePicker"
+            android:timePickerMode="spinner"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:text="Конец урока"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textColor="@android:color/white"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:layout_weight="1"
+                android:textStyle="normal|bold" />
+        </LinearLayout>
+        <TimePicker
+            android:layout_height="match_parent"
+            android:id="@+id/timePicker2"
+            android:layout_width="match_parent"
+            android:timePickerMode="spinner"
+            android:layout_weight="1"
+
+            />
+    </LinearLayout>
+
+
+</FrameLayout>
