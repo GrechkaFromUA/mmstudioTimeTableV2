@@ -1,16 +1,23 @@
 <resources>
-    <string name="app_name">TimeTable</string>
+    <string name="app_name">Расписание</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Настрйоки</string>
 
-    <string name="pc1">Предмет 1</string>
-    <string name="pc2">Предмет 2</string>
-    <string name="pc3">Предмет 3</string>
-    <string name="pc4">Предмет 4</string>
-    <string name="pc5">Предмет 5</string>
-    <string name="pc6">Предмет 6</string>
-    <string name="pc7">Предмет 7</string>
+    <string name="title_main">Главная</string>
+    <string name="title_settings">Настройки</string>
+    <string name="title_main_settings">Основные параметры</string>
+    <string name="title_time">Время уроков</string>
+    <string name="title_subjects">Предметы</string>
+    <string name="title_teachers">Учителя</string>
+    <string name="title_buildings">Корпусы</string>
+    <string name="title_lessons_type">Тип урока</string>
+    <string name="title_display">Отображение</string>
+    <string name="title_two_weeks">Показывать две недели</string>
+    <string name="title_firstday">Первый день семестра</string>
+    <string name="timetable">Расписание</string>
+
+
 </resources>

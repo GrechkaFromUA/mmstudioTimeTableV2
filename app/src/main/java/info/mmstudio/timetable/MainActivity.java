@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         FragmentManager fm = getFragmentManager();
-        setTitle("Расписание");
+        setTitle(getString(R.string.timetable));
         fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
     }
 
@@ -67,25 +67,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_main) {
             fm.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
-            setTitle("Расписание");
+            setTitle(getString(R.string.timetable));
         } else if (id == R.id.nav_settings) {
             fm.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
-            setTitle("Настройки");
+            setTitle(getString(R.string.title_settings));
         } else if (id == R.id.nav_time) {
             fm.beginTransaction().replace(R.id.content_frame, new TimeFragment()).commit();
-            setTitle("Время уроков");
+            setTitle(getString(R.string.title_time));
         } else if (id == R.id.nav_subjects) {
             fm.beginTransaction().replace(R.id.content_frame, new SubjectsFragment()).commit();
-            setTitle("Предметы");
+            setTitle(getString(R.string.title_subjects));
         } else if (id == R.id.nav_teachers) {
             fm.beginTransaction().replace(R.id.content_frame, new TeachersFragment()).commit();
-            setTitle("Учителя");
+            setTitle(getString(R.string.title_teachers));
         } else if (id == R.id.nav_buildings) {
             fm.beginTransaction().replace(R.id.content_frame, new BuildingsFragment()).commit();
-            setTitle("Корпуса");
+            setTitle(getString(R.string.title_buildings));
         } else if (id == R.id.nav_lessons_types) {
             fm.beginTransaction().replace(R.id.content_frame, new LessonsFragment()).commit();
-            setTitle("Типы уроков");
+            setTitle(getString(R.string.title_lessons_type));
         } else if (id == R.id.nav_two_weeks) {
 
         } else if (id == R.id.nav_first_day) {
